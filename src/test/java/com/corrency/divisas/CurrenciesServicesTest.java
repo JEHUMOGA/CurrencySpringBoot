@@ -260,7 +260,37 @@ public class CurrenciesServicesTest {
 
         when(valueCurrencyRepository.getValuesCurrency(1)).thenReturn(valuesCurrencies);
 
-        Response response = currenciesServices.getAllValues();
+        Response response = currenciesServices.getAllValues("ALL");
+
+        assertEquals("Ok", response.getMeta().getStatus());
+
+    }
+    @Test
+    public void getAllValuesTest2(){
+        List<Historico> fechasTest = new ArrayList<>();
+
+        Historico fechaTest = new Historico();
+        fechaTest.setFecha(LocalDateTime.now().withNano(0));
+        fechaTest.setHistoricoid(1);
+        fechaTest.setStatus((short) 1);
+        fechaTest.setTiemporespuesta(LocalTime.now().withNano(0));
+
+        fechasTest.add(fechaTest);
+
+        when(historicoService.getAllFechas()).thenReturn(fechasTest);
+
+        ValuesCurrencies values = new ValuesCurrencies();
+        values.setCode("USD");
+        values.setHistoricoid(1);
+        values.setValue(5.0);
+        values.setValuesid(1);
+
+        List<ValuesCurrencies> valuesCurrencies = new ArrayList<>();
+        valuesCurrencies.add(values);
+
+        when(valueCurrencyRepository.getValuesCurrency(1, "USD")).thenReturn(valuesCurrencies);
+
+        Response response = currenciesServices.getAllValues("USD");
 
         assertEquals("Ok", response.getMeta().getStatus());
 
@@ -270,7 +300,7 @@ public class CurrenciesServicesTest {
     public void getAllValuesNotFoundTest(){
         when(historicoService.getAllFechas()).thenReturn(new ArrayList<>());
 
-        Response response = currenciesServices.getAllValues();
+        Response response = currenciesServices.getAllValues("ALL");
 
         assertEquals(404,response.getMeta().getCode());
     }
@@ -292,7 +322,7 @@ public class CurrenciesServicesTest {
 
         when(valueCurrencyRepository.getValuesCurrency(1)).thenThrow(new NullPointerException());
 
-        Response response = currenciesServices.getAllValues();
+        Response response = currenciesServices.getAllValues("ALL");
 
         assertEquals(500,response.getMeta().getCode());
     }

@@ -8,24 +8,14 @@ CREATE TABLE historicocurrencies(
 	PRIMARY KEY(historicoid)
 );
 
-CREATE TABLE currencies(
-	code varchar(5) NOT NULL,
-	symbol varchar(5) NOT NULL,
-	nombre varchar(50) NOT NULL,
-	symbolnative varchar(5) NOT NULL,
-	decimaldigits int,
-	rounding int,
-	nombreplural varchar(50) NOT NULL,
-	PRIMARY KEY (code)
-);
 
 CREATE TABLE valuescurrencies(
+	valuesid int GENERATED ALWAYS AS IDENTITY NOT NULL,
 	historicoid int NOT NULL,
 	code varchar(5) NOT NULL,
 	valuecurrency numeric(20,2)
 );
 
 alter table valuescurrencies add constraint fk_valuescurrencies_historicoid FOREIGN KEY (historicoid) REFERENCES historicocurrencies(historicoid);
-alter table valuescurrencies add constraint fk_valuescurrencies_code FOREIGN KEY (code) REFERENCES currencies(code);
 
 

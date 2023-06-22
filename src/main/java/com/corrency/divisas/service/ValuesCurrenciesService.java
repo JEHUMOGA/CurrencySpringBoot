@@ -68,11 +68,9 @@ public class ValuesCurrenciesService {
             List<ValuesCurrencies> listMonedas = new ArrayList<>();
             for (ValuesCurrencies valuesCurrencies : ls) {
                 valuesCurrencies.setHistoricoid(fechaResultado.getHistoricoid());
-                //data.getValuesCurrencies().add(valueCurrencyRepository.save(valuesCurrencies));
                 listMonedas.add(valuesCurrencies);
             }
             valueCurrencyRepository.saveAll(listMonedas);
-            //data.setCurrencies((List<CurrenciesResponse>)valueCurrencyRepository.saveAll(listMonedas));
             logger.info("Valores de monedas registradas correctamente .");
             meta.setCode(200);
             meta.setStatus("Ok");
