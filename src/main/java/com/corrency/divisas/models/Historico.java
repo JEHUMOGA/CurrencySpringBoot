@@ -27,7 +27,7 @@ public class Historico {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer historicoid;
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private LocalDateTime fecha = LocalDateTime.now().withNano(0);
+    private LocalDateTime fecha = LocalDateTime.now().withNano(0).withSecond(0);
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private LocalTime tiemporespuesta;
     @JsonInclude(JsonInclude.Include.NON_NULL)

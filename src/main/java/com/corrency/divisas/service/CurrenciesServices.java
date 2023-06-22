@@ -60,7 +60,7 @@ public class CurrenciesServices {
             response = getValuesCurrenciesBetween(currency, fechaInicial, fechaFinal);
         }
         else {
-            response = getAllValues();
+            response = getAllValues(currency);
         }
         return response;
     }
@@ -104,7 +104,7 @@ public class CurrenciesServices {
         return response;
     }
 
-    public Response getAllValues(){
+    public Response getAllValues(String currency){
         logger.info("Obteniendo los valores de todas las monedas.");
         Response response = new Response();
         Meta meta = new Meta();
@@ -120,13 +120,24 @@ public class CurrenciesServices {
                 return response;
             }
 
+
             List<CurrenciesResponse> valuesCurrencies = new ArrayList<CurrenciesResponse>();
-            for (Historico fecha : fechas) {
-                CurrenciesResponse valueCurrency = new CurrenciesResponse(
-                    fecha.getFecha(), 
-                    valueCurrencyRepository.getValuesCurrency(fecha.getHistoricoid()));
-                valuesCurrencies.add(valueCurrency);
+            if(currency.equals("ALL")){
+                for (Historico fecha : fechas) {
+                    CurrenciesResponse valueCurrency = new CurrenciesResponse(
+                        fecha.getFecha(), 
+                        valueCurrencyRepository.getValuesCurrency(fecha.getHistoricoid()));
+                    valuesCurrencies.add(valueCurrency);
+                }
+            }else{
+                for (Historico fecha : fechas) {
+                    CurrenciesResponse valueCurrency = new CurrenciesResponse(
+                        fecha.getFecha(), 
+                        valueCurrencyRepository.getValuesCurrency(fecha.getHistoricoid(), currency));
+                    valuesCurrencies.add(valueCurrency);
+                }
             }
+            
 
             data.setCurrencies(valuesCurrencies);
             meta.setMeta(200, "Ok", mensaje);
@@ -134,7 +145,7 @@ public class CurrenciesServices {
             response.setMeta(meta);
         
         }catch (Exception e){
-            mensaje = "Error al mostrar all currencies ";
+            mensaje = "Error al mostrar all currencies: " + e.getMessage();
             meta.setMeta(500, "System Error", mensaje);
             response.setMeta(meta);
             return response;
