@@ -1,4 +1,5 @@
 -- dbdivisas
+--CREATE DATABASE divisas;
 
 CREATE TABLE historicocurrencies(
 	historicoid int GENERATED ALWAYS AS IDENTITY NOT NULL,
